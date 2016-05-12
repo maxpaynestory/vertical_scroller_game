@@ -2,6 +2,7 @@ package com.maxpaynestory.arcadeshooter.core
 {
 	import com.maxpaynestory.arcadeshooter.events.GameEvent;
 	
+	import flash.display.Bitmap;
 	import flash.display.SimpleButton;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -27,6 +28,10 @@ package com.maxpaynestory.arcadeshooter.core
 		private var startBtn:SimpleButton;
 
 		private var pauseBtn:SimpleButton;
+		
+		private var pauseImg:Bitmap;
+		
+		private var resumeImg:Bitmap;
 		
 		public function HUD()
 		{
@@ -63,20 +68,25 @@ package com.maxpaynestory.arcadeshooter.core
 			startBtn.hitTestState = AssetsManager.getInstance().getStartGameImg();
 			startBtn.addEventListener(MouseEvent.CLICK,onStartButtonClicked);
 			
+			pauseImg = AssetsManager.getInstance().getPauseGameImg();
+			resumeImg = AssetsManager.getInstance().getResumeGameImg();
+			
 			pauseBtn = new SimpleButton;
 			pauseBtn.y = 10;
-			pauseBtn.upState = AssetsManager.getInstance().getPauseGameImg()
-			pauseBtn.downState = AssetsManager.getInstance().getPauseGameImg();
-			pauseBtn.overState = AssetsManager.getInstance().getPauseGameImg();
-			pauseBtn.hitTestState = AssetsManager.getInstance().getPauseGameImg();
+			pauseBtn.upState = pauseBtn.downState = pauseBtn.overState = pauseBtn.hitTestState = pauseImg;
 			pauseBtn.addEventListener(MouseEvent.CLICK,onPauseButtonClicked);
 		}
 		
 		protected function onPauseButtonClicked(event:MouseEvent):void
 		{
-			this.removeChild(pauseBtn);
-			this.dispatchEvent(new GameEvent(GameEvent.PAUSE_GAME,{}));
-			this.addChild(startBtn);
+			if(pauseBtn.upState == pauseImg){
+				pauseBtn.upState = pauseBtn.downState = pauseBtn.overState = pauseBtn.hitTestState = resumeImg;
+				this.dispatchEvent(new GameEvent(GameEvent.PAUSE_GAME,{}));
+			}else{
+				pauseBtn.upState = pauseBtn.downState = pauseBtn.overState = pauseBtn.hitTestState = pauseImg;
+				this.dispatchEvent(new GameEvent(GameEvent.RESUME_GAME,{}));
+			}
+			
 		}
 		
 		protected function onStartButtonClicked(event:MouseEvent):void

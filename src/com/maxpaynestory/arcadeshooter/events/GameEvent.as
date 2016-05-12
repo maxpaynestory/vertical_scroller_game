@@ -7,6 +7,8 @@ package com.maxpaynestory.arcadeshooter.events
 		private var _data:Object;
 		public static const START_GAME:String="startgame";
 		public static const PAUSE_GAME:String="pausegame";
+		public static const RESUME_GAME:String="resumegame";
+		public static const PLAYER_FIRED:String="playerfired";
 		public function GameEvent(type:String, data:Object, bubbles:Boolean=true, cancelable:Boolean=true)
 		{
 			super(type, bubbles, cancelable);

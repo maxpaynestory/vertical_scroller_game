@@ -2,12 +2,12 @@ package com.maxpaynestory.arcadeshooter.interfaces
 {
 	public interface IPlayer
 	{
-		function Spawn(xPos:Number,yPos:Number):void;
-		function Die():void;
-		function MoveLeft():void;
-		function MoveRight():void;
-		function MoveDown():void;
-		function MoveUp():void;
-		function Fire():void;
+		function spawn(xPos:Number,yPos:Number):void;
+		function die():void;
+		function moveLeft():void;
+		function moveRight():void;
+		function moveDown():void;
+		function moveUp():void;
+		function fire():void;
 	}
 }
