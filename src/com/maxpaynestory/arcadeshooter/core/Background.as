@@ -1,4 +1,4 @@
-package
+package com.maxpaynestory.arcadeshooter.core
 {
 	import flash.display.Bitmap;
 	import flash.display.Sprite;

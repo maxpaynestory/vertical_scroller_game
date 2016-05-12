@@ -1,5 +1,8 @@
 package
 {
+	import com.maxpaynestory.arcadeshooter.core.Background;
+	import com.maxpaynestory.arcadeshooter.core.HUD;
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
@@ -8,16 +11,20 @@ package
 	{
 
 		private var backgroundLayer:Background;
+
+		private var hud:HUD;
 		public function vertical_scroller_game()
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE,onAddedToStage);
-			backgroundLayer = new Background();
+			backgroundLayer = new Background;
+			hud = new HUD;
 		}
 		
 		protected function onAddedToStage(event:Event):void
 		{
 			this.addEventListener(Event.ENTER_FRAME,onFrameLoop);
 			this.addChild(backgroundLayer);
+			this.addChild(hud);
 		}
 		
 		protected function onFrameLoop(event:Event):void
