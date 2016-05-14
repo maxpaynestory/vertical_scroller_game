@@ -10,7 +10,7 @@ package com.maxpaynestory.arcadeshooter.core
 	public class PlayerArea extends Sprite
 	{
 
-		private var player:Player;
+		private var _player:Player;
 
 		private var nextKeyboardMove:uint;
 		private var leftDown:Boolean = false;
@@ -26,7 +26,6 @@ package com.maxpaynestory.arcadeshooter.core
 		{
 			super();
 			this.addEventListener(Event.ADDED_TO_STAGE,onPlayerAreaAddedToStage);
-			player = new Player;
 			bulletList = new Array;
 			bulletFrameDelayCounter = 0;
 			frameDelayToShoot = 4;
@@ -34,9 +33,7 @@ package com.maxpaynestory.arcadeshooter.core
 		
 		protected function onPlayerAreaAddedToStage(event:Event):void
 		{
-			player.x = stage.stageWidth/2;
-			player.y = stage.stageHeight - 200;
-			this.addChild(player);
+			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN,keyPressHandler);
 			stage.addEventListener(KeyboardEvent.KEY_UP,keyUpHandler);
 			this.addEventListener(GameEvent.PLAYER_FIRED,onPlayerFired);
@@ -104,7 +101,7 @@ package com.maxpaynestory.arcadeshooter.core
 				
 				if(bulletFrameDelayCounter == frameDelayToShoot){
 					//player.fire();
-					var bullet:Bullet = new Bullet(Bullet.DIRECTION_UP,player.x+player.width/2,player.y);
+					var bullet:Bullet = new Bullet(Bullet.DIRECTION_UP,_player.x+_player.width/2,_player.y);
 					bulletList.push(bullet);
 					this.addChild(bullet);
 					bulletFrameDelayCounter = 0;
@@ -112,26 +109,44 @@ package com.maxpaynestory.arcadeshooter.core
 			}
 			
 			if(leftDown){
-				player.moveLeft();
+				_player.moveLeft();
 			}
 			if(upDown){
-				player.moveUp();
+				_player.moveUp();
 			}
 			if(rightDown){
-				player.moveRight();
+				_player.moveRight();
 			}
 			if(downDown){
-				player.moveDown();
+				_player.moveDown();
 			}
 			
-			if(bulletList.length > 0) //if there are any bullets in the bullet list
+			if(bulletList.length > 0)
 			{
-				for(var i:int = bulletList.length-1; i >= 0; i--) //for each one
+				for(var i:int = bulletList.length-1; i >= 0; i--)
 				{
 					var bul:Bullet = bulletList[i] as Bullet;
 					bul.uproachEnemy();
 				}
 			}
+		}
+		
+		public function spawnPlayer():void
+		{
+			_player = new Player;
+			_player.x = stage.stageWidth/2;
+			_player.y = stage.stageHeight - 200;
+			this.addChild(_player);
+		}
+
+		public function get getPlayer():Player
+		{
+			return _player;
+		}
+		
+		public function gameOver():void
+		{
+			
 		}
 	}
 }

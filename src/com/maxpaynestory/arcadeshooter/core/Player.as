@@ -9,8 +9,8 @@ package com.maxpaynestory.arcadeshooter.core
 	public class Player extends Sprite implements IPlayer
 	{
 		
-		private var speed:Number;
-		private var hideFactor:Number;
+		protected var speed:Number;
+		protected var hideFactor:Number;
 		
 		public function Player()
 		{
@@ -23,6 +23,8 @@ package com.maxpaynestory.arcadeshooter.core
 		protected function onPlaneAddedToStage(event:Event):void
 		{
 			this.addChild(AssetsManager.getInstance().getPlaneImg());
+			this.scaleY = 0.7;
+			this.scaleX = 0.7;
 		}
 		
 		public function spawn(xPos:Number, yPos:Number):void
@@ -31,6 +33,7 @@ package com.maxpaynestory.arcadeshooter.core
 		
 		public function die():void
 		{
+			this.parent.removeChild(this);
 		}
 		
 		public function moveLeft():void

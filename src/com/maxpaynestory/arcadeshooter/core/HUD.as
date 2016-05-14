@@ -50,13 +50,15 @@ package com.maxpaynestory.arcadeshooter.core
 			
 			lifeText = new TextField;
 			lifeText.selectable = false;
-			lifeText.text = "Lives: " + lives.toString();
+			updateLife();
+			lifeText.defaultTextFormat = textFormatLives;
 			lifeText.setTextFormat(textFormatLives);
 			lifeText.autoSize = TextFieldAutoSize.LEFT;
 			
 			scoreText = new TextField;
 			scoreText.selectable = false;
 			scoreText.text = "Score: " + score.toString();
+			scoreText.defaultTextFormat = textFormatScore;
 			scoreText.setTextFormat(textFormatScore);
 			scoreText.autoSize = TextFieldAutoSize.RIGHT;
 			
@@ -110,5 +112,24 @@ package com.maxpaynestory.arcadeshooter.core
 			startBtn.x = stage.stageWidth/2 -  startBtn.width/2;
 		}
 		
+		public function decreasePlayerLife():void
+		{
+			lives--;
+			updateLife();
+		}
+		
+		private function updateLife():void
+		{
+			lifeText.text = "Lives: " + lives.toString();
+		}
+		
+		public function checkIfPlayerDied():Boolean
+		{
+			// TODO Auto Generated method stub
+			if(lives <= 0){
+				return true;
+			}
+			return false;
+		}
 	}
 }

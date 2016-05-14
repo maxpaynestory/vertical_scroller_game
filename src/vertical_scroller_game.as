@@ -1,6 +1,7 @@
 package
 {
 	import com.maxpaynestory.arcadeshooter.core.Background;
+	import com.maxpaynestory.arcadeshooter.core.EnemyArea;
 	import com.maxpaynestory.arcadeshooter.core.HUD;
 	import com.maxpaynestory.arcadeshooter.core.PlayerArea;
 	import com.maxpaynestory.arcadeshooter.events.GameEvent;
@@ -14,9 +15,10 @@ package
 
 		private var backgroundLayer:Background;
 		private var hud:HUD;
-		private var isPaused:Boolean;
-
+		private var isGamePaused:Boolean;
 		private var playerArea:PlayerArea;
+		private var enemyArea:EnemyArea;
+		private var isPlayerHit:Boolean;
 		
 		public function vertical_scroller_game()
 		{
@@ -24,40 +26,61 @@ package
 			backgroundLayer = new Background;
 			hud = new HUD;
 			playerArea = new PlayerArea;
-			isPaused = true;
+			enemyArea = new EnemyArea(playerArea);
+			isGamePaused = true;
+			isPlayerHit = false;
 		}
 		
 		protected function onAddedToStage(event:Event):void
 		{
 			this.addEventListener(Event.ENTER_FRAME,onFrameLoop);
 			this.addChild(backgroundLayer);
+			this.addChild(enemyArea);
 			this.addChild(playerArea);
 			this.addChild(hud);
 			this.addEventListener(GameEvent.START_GAME,onGameStartEvent);
 			this.addEventListener(GameEvent.PAUSE_GAME,onGamePauseEvent);
 			this.addEventListener(GameEvent.RESUME_GAME,onGameResumeEvent);
+			this.addEventListener(GameEvent.ENEMY_HIT_THE_PLAYER,onEnemyHitThePlayerEvent);
+		}
+		
+		protected function onEnemyHitThePlayerEvent(event:Event):void
+		{
+			isPlayerHit = true;
 		}
 		
 		protected function onGameResumeEvent(event:GameEvent):void
 		{
-			isPaused = false;
+			isGamePaused = false;
 		}
 		
 		protected function onGamePauseEvent(event:GameEvent):void
 		{
-			isPaused = true;
+			isGamePaused = true;
 		}
 		
 		protected function onGameStartEvent(event:GameEvent):void
 		{
-			isPaused = false;
+			playerArea.spawnPlayer();
+			//enemyArea.spawnEnemies();
+			isGamePaused = false;
 		}
 		
 		protected function onFrameLoop(event:Event):void
 		{
-			if(!isPaused){
+			if(!isGamePaused){
+				if(isPlayerHit){
+					hud.decreasePlayerLife();
+					isPlayerHit = false;
+				}
+				
+				if(hud.checkIfPlayerDied()){
+					playerArea.gameOver();
+				}
+				
 				backgroundLayer.updateFrame();
 				playerArea.updateFrame();
+				enemyArea.updateFrame();
 			}
 		}
 	}
