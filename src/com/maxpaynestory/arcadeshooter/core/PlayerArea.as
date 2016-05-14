@@ -18,14 +18,18 @@ package com.maxpaynestory.arcadeshooter.core
 		private var rightDown:Boolean = false;
 		private var downDown:Boolean = false;
 		private var spaceDown:Boolean = false;
-		private var allowedToShoot:Boolean = true;
 		private var bulletList:Array;
+		private var bulletFrameDelayCounter:Number;
+		private var frameDelayToShoot:Number;
+		
 		public function PlayerArea()
 		{
 			super();
 			this.addEventListener(Event.ADDED_TO_STAGE,onPlayerAreaAddedToStage);
 			player = new Player;
 			bulletList = new Array;
+			bulletFrameDelayCounter = 0;
+			frameDelayToShoot = 4;
 		}
 		
 		protected function onPlayerAreaAddedToStage(event:Event):void
@@ -95,12 +99,16 @@ package com.maxpaynestory.arcadeshooter.core
 		
 		public function updateFrame():void
 		{
-			if(spaceDown && allowedToShoot){
-				//player.fire();
-				var bullet:Bullet = new Bullet(Bullet.DIRECTION_UP,player.x+player.width/2,player.y);
-				bulletList.push(bullet);
-				this.addChild(bullet);
-				allowedToShoot = false;
+			if(spaceDown){
+				bulletFrameDelayCounter++;
+				
+				if(bulletFrameDelayCounter == frameDelayToShoot){
+					//player.fire();
+					var bullet:Bullet = new Bullet(Bullet.DIRECTION_UP,player.x+player.width/2,player.y);
+					bulletList.push(bullet);
+					this.addChild(bullet);
+					bulletFrameDelayCounter = 0;
+				}
 			}
 			
 			if(leftDown){

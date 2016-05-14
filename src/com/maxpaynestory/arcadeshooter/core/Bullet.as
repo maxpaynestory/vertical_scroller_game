@@ -18,7 +18,7 @@ package com.maxpaynestory.arcadeshooter.core
 			bulletDirection = direction;
 			sx = startX;
 			sy = startY;
-			speed = 5;
+			speed = 10;
 		}
 		
 		protected function onBulletAddedToStage(event:Event):void
