@@ -40,30 +40,52 @@ package com.maxpaynestory.arcadeshooter.core
 		
 		public function updateFrame():void
 		{
-			if (enemyList.length > 0){ //enemies left?
-				var enemy:Enemy;
-				for (var m:int = 0; m < enemyList.length; m++){ // for each enemy in the enemyList
+			var enemiesToDestroy:Array = new Array;
+			var enemy:Enemy;
+			var bullet:Bullet;
+			
+			if (enemyList.length > 0){
+				for (var m:int = 0; m < enemyList.length; m++){
 					enemy = enemyList[m] as Enemy;
-					if ( enemy.hitTestObject(_playerArea.getPlayer) ){
-						trace("player collided with enemy");
-						//code to damage player goes here
-						enemy.removeSelf();
+					if ( enemy.hitTestObject(_playerArea.player) ){
+						enemiesToDestroy.push(m);
 						this.dispatchEvent(new GameEvent(GameEvent.ENEMY_HIT_THE_PLAYER,{}));
+					}
+					
+					for (var bulletCounter:int = 0; bulletCounter < _playerArea.bulletList.length; bulletCounter++){
+						bullet = _playerArea.bulletList[bulletCounter] as Bullet;
+						if ( enemy.hitTestObject(bullet) ){
+							enemiesToDestroy.push(m);
+							this.dispatchEvent(new GameEvent(GameEvent.BULLET_HIT_THE_ENEMY,{}));
+						}
 					}
 				}
 			}
 			
 			if(enemyList.length > 0)
 			{
-				var en:Enemy;
 				for(var i:int = enemyList.length-1; i >= 0; i--)
 				{
-					en = enemyList[i] as Enemy;
-					en.moveDown();
+					enemy = enemyList[i] as Enemy;
+					enemy.moveDown();
+					
+					if(enemy.outOfScreen()){
+						enemiesToDestroy.push(i);
+					}
 				}
 			}
 			
+			for(var loopCounter:int = 0; loopCounter < enemiesToDestroy.length;loopCounter++)
+			{
+				enemy = enemyList[enemiesToDestroy[loopCounter]] as Enemy;
+				if(enemy != null){
+					enemy.removeSelf();
+				}
+				enemyList.splice(enemiesToDestroy[loopCounter],1);
+			}
+			
 			spawnEnemies();
+			enemiesToDestroy = null;
 		}
 	}
 }

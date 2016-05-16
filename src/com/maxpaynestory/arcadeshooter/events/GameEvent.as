@@ -11,6 +11,8 @@ package com.maxpaynestory.arcadeshooter.events
 		public static const PLAYER_FIRED:String="playerfired";
 		public static const ENEMY_FIRED:String="enemyfired";
 		public static const ENEMY_HIT_THE_PLAYER:String="enemyhittheplayer";
+		public static const BULLET_HIT_THE_ENEMY:String="bullethittheenemy";
+		public static const GIVE_PERKS_TO_PLAYER:String="giveperkstoplayer";
 		public function GameEvent(type:String, data:Object, bubbles:Boolean=true, cancelable:Boolean=true)
 		{
 			super(type, bubbles, cancelable);

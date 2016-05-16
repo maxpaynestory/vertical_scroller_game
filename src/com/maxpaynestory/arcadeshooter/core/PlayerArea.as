@@ -18,7 +18,7 @@ package com.maxpaynestory.arcadeshooter.core
 		private var rightDown:Boolean = false;
 		private var downDown:Boolean = false;
 		private var spaceDown:Boolean = false;
-		private var bulletList:Array;
+		private var _bulletList:Array;
 		private var bulletFrameDelayCounter:Number;
 		private var frameDelayToShoot:Number;
 		
@@ -26,22 +26,15 @@ package com.maxpaynestory.arcadeshooter.core
 		{
 			super();
 			this.addEventListener(Event.ADDED_TO_STAGE,onPlayerAreaAddedToStage);
-			bulletList = new Array;
+			_bulletList = new Array;
 			bulletFrameDelayCounter = 0;
 			frameDelayToShoot = 4;
 		}
 		
 		protected function onPlayerAreaAddedToStage(event:Event):void
 		{
-			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN,keyPressHandler);
 			stage.addEventListener(KeyboardEvent.KEY_UP,keyUpHandler);
-			this.addEventListener(GameEvent.PLAYER_FIRED,onPlayerFired);
-		}
-		
-		protected function onPlayerFired(event:GameEvent):void
-		{
-			//bulletList.push(new Bullet(Bullet.DIRECTION_UP));
 		}
 		
 		protected function keyUpHandler(event:KeyboardEvent):void
@@ -96,12 +89,14 @@ package com.maxpaynestory.arcadeshooter.core
 		
 		public function updateFrame():void
 		{
+			var bulletsToDestroy:Array = new Array;
+			var bullet:Bullet;
+			
 			if(spaceDown){
 				bulletFrameDelayCounter++;
 				
 				if(bulletFrameDelayCounter == frameDelayToShoot){
-					//player.fire();
-					var bullet:Bullet = new Bullet(Bullet.DIRECTION_UP,_player.x+_player.width/2,_player.y);
+					bullet = new Bullet(Bullet.DIRECTION_UP,_player.x+_player.width/2,_player.y);
 					bulletList.push(bullet);
 					this.addChild(bullet);
 					bulletFrameDelayCounter = 0;
@@ -125,9 +120,20 @@ package com.maxpaynestory.arcadeshooter.core
 			{
 				for(var i:int = bulletList.length-1; i >= 0; i--)
 				{
-					var bul:Bullet = bulletList[i] as Bullet;
-					bul.uproachEnemy();
+					bullet = bulletList[i] as Bullet;
+					bullet.uproachEnemy();
+					
+					if(bullet.outOfScreen()){
+						bulletsToDestroy.push(i);
+					}
 				}
+			}
+			
+			for(var loopCounter:int = 0; loopCounter < bulletsToDestroy.length;loopCounter++)
+			{
+				bullet = bulletList[bulletsToDestroy[loopCounter]] as Bullet;
+				bullet.removeSelf();
+				bulletList.splice(bulletsToDestroy[loopCounter],1);
 			}
 		}
 		
@@ -139,7 +145,7 @@ package com.maxpaynestory.arcadeshooter.core
 			this.addChild(_player);
 		}
 
-		public function get getPlayer():Player
+		public function get player():Player
 		{
 			return _player;
 		}
@@ -148,5 +154,11 @@ package com.maxpaynestory.arcadeshooter.core
 		{
 			
 		}
+
+		public function get bulletList():Array
+		{
+			return _bulletList;
+		}
+
 	}
 }

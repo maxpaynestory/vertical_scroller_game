@@ -57,7 +57,7 @@ package com.maxpaynestory.arcadeshooter.core
 			
 			scoreText = new TextField;
 			scoreText.selectable = false;
-			scoreText.text = "Score: " + score.toString();
+			updateScore();
 			scoreText.defaultTextFormat = textFormatScore;
 			scoreText.setTextFormat(textFormatScore);
 			scoreText.autoSize = TextFieldAutoSize.RIGHT;
@@ -130,6 +130,22 @@ package com.maxpaynestory.arcadeshooter.core
 				return true;
 			}
 			return false;
+		}
+		
+		public function increasePlayerScore():void
+		{
+			score += 10;
+			updateScore();
+			if(score == 150){ /////////// on reaching 150 score increase player speed
+				this.dispatchEvent(new GameEvent(GameEvent.GIVE_PERKS_TO_PLAYER,[
+					Player.BOOST_PLAYER_SPEED
+				]));
+			}
+		}
+		
+		private function updateScore():void
+		{
+			scoreText.text = "Score: " + score.toString();
 		}
 	}
 }

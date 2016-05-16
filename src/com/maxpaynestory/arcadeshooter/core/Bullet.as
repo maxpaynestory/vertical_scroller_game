@@ -42,5 +42,18 @@ package com.maxpaynestory.arcadeshooter.core
 					break;
 			}
 		}
+		
+		public function outOfScreen():Boolean
+		{
+			if(this.y >= stage.stageHeight || this.y <= 0){
+				return true;
+			}
+			return false;
+		}
+		
+		public function removeSelf():void
+		{
+			this.parent.removeChild(this);
+		}
 	}
 }

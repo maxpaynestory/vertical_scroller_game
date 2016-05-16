@@ -36,5 +36,14 @@ package com.maxpaynestory.arcadeshooter.core
 		{
 			this.parent.removeChild(this);
 		}
+		
+		public function outOfScreen():Boolean
+		{
+			// TODO Auto Generated method stub
+			if(this.y >= stage.stageHeight){
+				return true;
+			}
+			return false;
+		}
 	}
 }

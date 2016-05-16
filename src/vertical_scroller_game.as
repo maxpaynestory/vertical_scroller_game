@@ -19,6 +19,7 @@ package
 		private var playerArea:PlayerArea;
 		private var enemyArea:EnemyArea;
 		private var isPlayerHit:Boolean;
+		private var isEnemyHit:Boolean;
 		
 		public function vertical_scroller_game()
 		{
@@ -42,6 +43,12 @@ package
 			this.addEventListener(GameEvent.PAUSE_GAME,onGamePauseEvent);
 			this.addEventListener(GameEvent.RESUME_GAME,onGameResumeEvent);
 			this.addEventListener(GameEvent.ENEMY_HIT_THE_PLAYER,onEnemyHitThePlayerEvent);
+			this.addEventListener(GameEvent.BULLET_HIT_THE_ENEMY,onBulletHitTheEnemy);
+		}
+		
+		protected function onBulletHitTheEnemy(event:Event):void
+		{
+			isEnemyHit = true;
 		}
 		
 		protected function onEnemyHitThePlayerEvent(event:Event):void
@@ -62,20 +69,26 @@ package
 		protected function onGameStartEvent(event:GameEvent):void
 		{
 			playerArea.spawnPlayer();
-			//enemyArea.spawnEnemies();
 			isGamePaused = false;
 		}
 		
 		protected function onFrameLoop(event:Event):void
 		{
-			if(!isGamePaused){
-				if(isPlayerHit){
+			if(!isGamePaused){    ////// Check if Game is not paused or over.
+				
+				if(isPlayerHit){ //// Decrease player life of player if it was hit
 					hud.decreasePlayerLife();
 					isPlayerHit = false;
 				}
 				
-				if(hud.checkIfPlayerDied()){
-					playerArea.gameOver();
+				if(isEnemyHit){ //// Incease player score if a bullet hit enemy
+					hud.increasePlayerScore();
+					isEnemyHit = false;
+				}
+				
+				if(hud.checkIfPlayerDied()){ //// Show game over if player died
+					isGamePaused = true;
+					//playerArea.gameOver();
 				}
 				
 				backgroundLayer.updateFrame();

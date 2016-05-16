@@ -11,6 +11,7 @@ package com.maxpaynestory.arcadeshooter.core
 		
 		protected var speed:Number;
 		protected var hideFactor:Number;
+		public static const BOOST_PLAYER_SPEED:String="boostplayerspeed";
 		
 		public function Player()
 		{
@@ -18,6 +19,20 @@ package com.maxpaynestory.arcadeshooter.core
 			speed = 4;
 			hideFactor = 0.5;
 			this.addEventListener(Event.ADDED_TO_STAGE,onPlaneAddedToStage);
+			this.addEventListener(GameEvent.GIVE_PERKS_TO_PLAYER,onGettingPerks);
+		}
+		
+		protected function onGettingPerks(event:GameEvent):void
+		{
+			var perksArray:Array = event.data as Array;
+			
+			for(var perksCounter:int=0; perksCounter < perksArray.length;perksCounter++){
+				switch(perksArray[perksCounter]){
+					case Player.BOOST_PLAYER_SPEED:
+						speed += 5;
+						break;
+				}
+			}
 		}
 		
 		protected function onPlaneAddedToStage(event:Event):void
