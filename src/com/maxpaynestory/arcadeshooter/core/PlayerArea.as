@@ -99,10 +99,11 @@ package com.maxpaynestory.arcadeshooter.core
 			var bulletsToDestroy:Array = new Array;
 			var bullet:Bullet;
 			
-			if(spaceDown && controlsEnabled){
+			if(spaceDown){   ///// If Space bar is down
 				bulletFrameDelayCounter++;
 				
-				if(bulletFrameDelayCounter == frameDelayToShoot){
+				/////// If bullet delay has reached then fire a bullet.
+				if(bulletFrameDelayCounter == frameDelayToShoot){ 
 					bullet = new Bullet(Bullet.DIRECTION_UP,_player.x+_player.width/2,_player.y);
 					bulletList.push(bullet);
 					this.addChild(bullet);
@@ -110,16 +111,16 @@ package com.maxpaynestory.arcadeshooter.core
 				}
 			}
 			
-			if(leftDown && controlsEnabled){
+			if(leftDown){
 				_player.moveLeft();
 			}
-			if(upDown && controlsEnabled){
+			if(upDown && controlsEnabled){   ////// disable up key if greensock library is doing motion tweening
 				_player.moveUp();
 			}
-			if(rightDown && controlsEnabled){
+			if(rightDown){
 				_player.moveRight();
 			}
-			if(downDown && controlsEnabled){
+			if(downDown && controlsEnabled){ /////// disable down key if greensock library is doing motion tweening
 				_player.moveDown();
 			}
 			
@@ -128,10 +129,10 @@ package com.maxpaynestory.arcadeshooter.core
 				for(var i:int = bulletList.length-1; i >= 0; i--)
 				{
 					bullet = bulletList[i] as Bullet;
-					bullet.uproachEnemy();
+					bullet.uproachEnemy();  ///// update position of bullets fired by player
 					
 					if(bullet.outOfScreen()){
-						bulletsToDestroy.push(i);
+						bulletsToDestroy.push(i); //// if bullet has gone out of screen add to a list
 					}
 				}
 			}
@@ -139,7 +140,7 @@ package com.maxpaynestory.arcadeshooter.core
 			for(var loopCounter:int = 0; loopCounter < bulletsToDestroy.length;loopCounter++)
 			{
 				bullet = bulletList[bulletsToDestroy[loopCounter]] as Bullet;
-				bullet.removeSelf();
+				bullet.removeSelf(); //// remove bullets that need to be destroyed
 				bulletList.splice(bulletsToDestroy[loopCounter],1);
 			}
 		}
@@ -158,11 +159,6 @@ package com.maxpaynestory.arcadeshooter.core
 		public function get player():Player
 		{
 			return _player;
-		}
-		
-		public function gameOver():void
-		{
-			
 		}
 
 		public function get bulletList():Array

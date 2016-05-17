@@ -15,10 +15,11 @@ package com.maxpaynestory.arcadeshooter.core
 		{
 			super();
 			this.addEventListener(Event.ADDED_TO_STAGE,onBulletAddedToStage);
+			/////// Incase if we want to make enemy fire bullets we can use the same Class with changed direction
 			bulletDirection = direction;
 			sx = startX;
 			sy = startY;
-			speed = 10;
+			speed = 10; /// Speed of the bullet
 		}
 		
 		protected function onBulletAddedToStage(event:Event):void

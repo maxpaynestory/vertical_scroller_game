@@ -2,7 +2,7 @@ package
 {
 	import com.maxpaynestory.arcadeshooter.core.Background;
 	import com.maxpaynestory.arcadeshooter.core.EnemyArea;
-	import com.maxpaynestory.arcadeshooter.core.GameOver;
+	import com.maxpaynestory.arcadeshooter.core.GameOverDialog;
 	import com.maxpaynestory.arcadeshooter.core.HUD;
 	import com.maxpaynestory.arcadeshooter.core.PlayerArea;
 	import com.maxpaynestory.arcadeshooter.events.GameEvent;
@@ -65,8 +65,6 @@ package
 			this.removeChild(enemyArea);
 			this.removeChild(playerArea);
 			this.removeChild(hud);
-			
-			trace("Play Again clicked");
 			StartNewGame();
 		}
 		
@@ -99,28 +97,27 @@ package
 		protected function onFrameLoop(event:Event):void
 		{
 			if(!isGamePaused){    ////// Check if Game is not paused or over.
-				
-				if(isPlayerHit){ //// Decrease player life of player if it was hit
-					hud.decreasePlayerLife();
-					if(hud.checkIfPlayerDied()){ //// Show game over if player died
+				if(isPlayerHit){ 
+					hud.decreasePlayerLife(); //// Decrease player life of player if it was hit
+					if(hud.checkIfPlayerDied()){ //// Show game over dialog if player died
 						isGamePaused = true;
 						this.addChild(gameOverDialog);
 					}
 					else
 					{
-						playerArea.spawnPlayer();
+						playerArea.spawnPlayer();    ////// Re-spawn player if there is lives remaining
 					}
 					isPlayerHit = false;
 				}
 				
-				if(isEnemyHit){ //// Incease player score if a bullet hit enemy
-					hud.increasePlayerScore();
+				if(isEnemyHit){ //// Check if enemy is hit
+					hud.increasePlayerScore(); ////// Increase score inside HUD
 					isEnemyHit = false;
 				}
 				
-				backgroundLayer.updateFrame();
-				playerArea.updateFrame();
-				enemyArea.updateFrame();
+				backgroundLayer.updateFrame(); ////// Update Vertical Scrolling background
+				playerArea.updateFrame(); ////// Update frames for player area
+				enemyArea.updateFrame(); ////// Update frames for enemy area
 			}
 		}
 	}

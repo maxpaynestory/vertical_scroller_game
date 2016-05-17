@@ -4,20 +4,23 @@ package
 
 	public class AssetsManager
 	{
-		
+		//// Embed the backround image
 		[Embed(source="../assets/background.png")] 
 		private var backgroundImgClass:Class;
-		[Embed(source="../assets/start_game.png")] 
-		private var startGameImgClass:Class;
+		
+		////// Embed pause image
 		[Embed(source="../assets/pause.png")] 
 		private var pauseGameImgClass:Class;
+		
+		//// Embed resume image
 		[Embed(source="../assets/resume.png")] 
 		private var resumeGameImgClass:Class;
+		
+		///// Embed blue plane image
 		[Embed(source="../assets/plane.png")] 
 		private var planeImgClass:Class;
 		
 		private var bgImage:Bitmap;
-		private var startGameImg:Bitmap;
 		private var pauseGameImg:Bitmap;
 		private var resumeGameImg:Bitmap;
 		private var planeImg:Bitmap;
@@ -25,6 +28,7 @@ package
 		
 		public function AssetsManager()
 		{
+			///// Using Singleton pattern for Asset Manager class
 			if(_instance){
 				throw new Error("AssetsManager... use getInstance()");
 			}
@@ -33,7 +37,6 @@ package
 		
 		public function LoadAllAssets():void{
 			bgImage = new backgroundImgClass() as Bitmap;
-			startGameImg = new startGameImgClass() as Bitmap;
 			pauseGameImg = new pauseGameImgClass() as Bitmap;
 			resumeGameImg = new resumeGameImgClass() as Bitmap;
 			planeImg = new planeImgClass() as Bitmap;
@@ -41,10 +44,6 @@ package
 		
 		public function getBackgroundImg():Bitmap{
 			return bgImage;
-		}
-		
-		public function getStartGameImg():Bitmap{
-			return startGameImg;
 		}
 		
 		public function getPauseGameImg():Bitmap{

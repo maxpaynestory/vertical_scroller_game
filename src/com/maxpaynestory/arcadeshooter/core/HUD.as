@@ -122,7 +122,6 @@ package com.maxpaynestory.arcadeshooter.core
 		
 		public function checkIfPlayerDied():Boolean
 		{
-			// TODO Auto Generated method stub
 			if(lives <= 0){
 				return true;
 			}
@@ -133,7 +132,7 @@ package com.maxpaynestory.arcadeshooter.core
 		{
 			score += 10;
 			updateScore();
-			if(score == 150){ /////////// on reaching 150 score increase player speed
+			if(score == 150){ /////////// if player score has reached 150 increase player speed
 				this.dispatchEvent(new GameEvent(GameEvent.GIVE_PERKS_TO_PLAYER,[
 					Player.BOOST_PLAYER_SPEED
 				]));

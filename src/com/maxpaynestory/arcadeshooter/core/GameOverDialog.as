@@ -1,4 +1,4 @@
-package
+package com.maxpaynestory.arcadeshooter.core
 {
 	import com.maxpaynestory.arcadeshooter.events.GameEvent;
 	import com.maxpaynestory.arcadeshooter.factories.ButtonBuilder;
@@ -22,6 +22,8 @@ package
 		
 		protected function onAddedToStage(event:Event):void
 		{
+			//// Dimmed background of Game over dialog
+			
 			this.graphics.beginFill(0x000000,0.7);
 			this.graphics.drawRect(0,0,stage.stageWidth,stage.stageHeight);
 			this.graphics.endFill();

@@ -29,10 +29,10 @@ package com.maxpaynestory.arcadeshooter.core
 		
 		public function spawnEnemies():void
 		{
-			if(enemyList.length < enemyLimit){
+			if(enemyList.length < enemyLimit){ /////// Spawning new enemies if limit is reached
 				var enemy:Enemy = new Enemy();
 				enemy.y = 0;
-				enemy.x = int(Math.random()*(stage.stageWidth - enemy.width));
+				enemy.x = int(Math.random()*(stage.stageWidth - stage.stageWidth/9));
 				enemyList.push(enemy);
 				this.addChild(enemy);
 			}
@@ -45,17 +45,18 @@ package com.maxpaynestory.arcadeshooter.core
 			var bullet:Bullet;
 			
 			if (enemyList.length > 0){
+				//// looping through the enemy list and checking collisions
 				for (var m:int = 0; m < enemyList.length; m++){
 					enemy = enemyList[m] as Enemy;
-					if ( enemy.hitTestObject(_playerArea.player) ){
-						enemiesToDestroy.push(m);
+					if ( enemy.hitTestObject(_playerArea.player) ){ ///// if enemy collided with player notify gameplay
+						enemiesToDestroy.push(m); //// Adding to a list if enemy need to be destroyed
 						this.dispatchEvent(new GameEvent(GameEvent.ENEMY_HIT_THE_PLAYER,{}));
 					}
 					
 					for (var bulletCounter:int = 0; bulletCounter < _playerArea.bulletList.length; bulletCounter++){
 						bullet = _playerArea.bulletList[bulletCounter] as Bullet;
-						if ( enemy.hitTestObject(bullet) ){
-							enemiesToDestroy.push(m);
+						if ( enemy.hitTestObject(bullet) ){ ////// if player bullet hit enemy notify gameplay
+							enemiesToDestroy.push(m); ///// Adding to a list if enemy need to be destroyed
 							this.dispatchEvent(new GameEvent(GameEvent.BULLET_HIT_THE_ENEMY,{}));
 						}
 					}
@@ -67,10 +68,10 @@ package com.maxpaynestory.arcadeshooter.core
 				for(var i:int = enemyList.length-1; i >= 0; i--)
 				{
 					enemy = enemyList[i] as Enemy;
-					enemy.moveDown();
+					enemy.moveDown();      ////// Updating enemy position
 					
 					if(enemy.outOfScreen()){
-						enemiesToDestroy.push(i);
+						enemiesToDestroy.push(i); ///// Adding enemy to a list if they have gone our of screen
 					}
 				}
 			}
@@ -79,7 +80,7 @@ package com.maxpaynestory.arcadeshooter.core
 			{
 				enemy = enemyList[enemiesToDestroy[loopCounter]] as Enemy;
 				if(enemy != null){
-					enemy.removeSelf();
+					enemy.removeSelf();   ///// removing all enemies from the list that need to be destroyed
 				}
 				enemyList.splice(enemiesToDestroy[loopCounter],1);
 			}

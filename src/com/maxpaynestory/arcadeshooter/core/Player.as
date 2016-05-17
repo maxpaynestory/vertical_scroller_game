@@ -48,6 +48,8 @@ package com.maxpaynestory.arcadeshooter.core
 		{
 			this.y = stage.stageHeight + this.height + 10;
 			this.x = stage.stageWidth/2;
+			
+			//// Use Greensock Tween library for player spawning
 			TweenLite.to(this, 1, {
 				y:stage.stageHeight - 90,
 				onComplete:onCompleteTweeningSpawn
