@@ -1,6 +1,7 @@
 package com.maxpaynestory.arcadeshooter.core
 {
 	import com.maxpaynestory.arcadeshooter.events.GameEvent;
+	import com.maxpaynestory.arcadeshooter.factories.ButtonBuilder;
 	
 	import flash.display.Bitmap;
 	import flash.display.SimpleButton;
@@ -62,12 +63,8 @@ package com.maxpaynestory.arcadeshooter.core
 			scoreText.setTextFormat(textFormatScore);
 			scoreText.autoSize = TextFieldAutoSize.RIGHT;
 			
-			startBtn = new SimpleButton;
+			startBtn = ButtonBuilder.createButton("Start");
 			startBtn.y = 350;
-			startBtn.upState = AssetsManager.getInstance().getStartGameImg();
-			startBtn.downState = AssetsManager.getInstance().getStartGameImg();
-			startBtn.overState = AssetsManager.getInstance().getStartGameImg();
-			startBtn.hitTestState = AssetsManager.getInstance().getStartGameImg();
 			startBtn.addEventListener(MouseEvent.CLICK,onStartButtonClicked);
 			
 			pauseImg = AssetsManager.getInstance().getPauseGameImg();

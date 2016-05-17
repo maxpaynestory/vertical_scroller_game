@@ -21,6 +21,7 @@ package com.maxpaynestory.arcadeshooter.core
 		private var _bulletList:Array;
 		private var bulletFrameDelayCounter:Number;
 		private var frameDelayToShoot:Number;
+		private var controlsEnabled:Boolean;
 		
 		public function PlayerArea()
 		{
@@ -35,6 +36,12 @@ package com.maxpaynestory.arcadeshooter.core
 		{
 			stage.addEventListener(KeyboardEvent.KEY_DOWN,keyPressHandler);
 			stage.addEventListener(KeyboardEvent.KEY_UP,keyUpHandler);
+			this.addEventListener(GameEvent.ENABLE_PLAYER_CONTROLS,onPlayeControlsEnabledEvent);
+		}
+		
+		protected function onPlayeControlsEnabledEvent(event:GameEvent):void
+		{
+			controlsEnabled = true;
 		}
 		
 		protected function keyUpHandler(event:KeyboardEvent):void
@@ -92,7 +99,7 @@ package com.maxpaynestory.arcadeshooter.core
 			var bulletsToDestroy:Array = new Array;
 			var bullet:Bullet;
 			
-			if(spaceDown){
+			if(spaceDown && controlsEnabled){
 				bulletFrameDelayCounter++;
 				
 				if(bulletFrameDelayCounter == frameDelayToShoot){
@@ -103,16 +110,16 @@ package com.maxpaynestory.arcadeshooter.core
 				}
 			}
 			
-			if(leftDown){
+			if(leftDown && controlsEnabled){
 				_player.moveLeft();
 			}
-			if(upDown){
+			if(upDown && controlsEnabled){
 				_player.moveUp();
 			}
-			if(rightDown){
+			if(rightDown && controlsEnabled){
 				_player.moveRight();
 			}
-			if(downDown){
+			if(downDown && controlsEnabled){
 				_player.moveDown();
 			}
 			
@@ -139,10 +146,13 @@ package com.maxpaynestory.arcadeshooter.core
 		
 		public function spawnPlayer():void
 		{
+			if(_player){
+				this.removeChild(_player);
+			}
+			controlsEnabled = false;
 			_player = new Player;
-			_player.x = stage.stageWidth/2;
-			_player.y = stage.stageHeight - 200;
 			this.addChild(_player);
+			_player.spawn(100,100);
 		}
 
 		public function get player():Player

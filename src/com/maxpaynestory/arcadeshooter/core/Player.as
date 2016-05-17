@@ -1,5 +1,7 @@
 package com.maxpaynestory.arcadeshooter.core
 {
+	import com.greensock.*;
+	import com.greensock.easing.*;
 	import com.maxpaynestory.arcadeshooter.events.GameEvent;
 	import com.maxpaynestory.arcadeshooter.interfaces.IPlayer;
 	
@@ -44,6 +46,17 @@ package com.maxpaynestory.arcadeshooter.core
 		
 		public function spawn(xPos:Number, yPos:Number):void
 		{
+			this.y = stage.stageHeight + this.height + 10;
+			this.x = stage.stageWidth/2;
+			TweenLite.to(this, 1, {
+				y:stage.stageHeight - 90,
+				onComplete:onCompleteTweeningSpawn
+			});
+		}
+		
+		private function onCompleteTweeningSpawn():void
+		{
+			this.dispatchEvent(new GameEvent(GameEvent.ENABLE_PLAYER_CONTROLS,{}));
 		}
 		
 		public function die():void
